@@ -33,6 +33,11 @@ jobs:
           test -f project/build.gradle.kts
           test -f project/app/build.gradle.kts
 
+      - name: Fix missing Toast import
+        run: |
+          FILE="project/app/src/main/java/il/yomanhasofer/goldnew/GoldJournalView.java"
+          grep -q '^import android.widget.Toast;' "$FILE" || sed -i '/^package /a import android.widget.Toast;' "$FILE"
+
       - name: Ensure Android 35 build tools
         run: |
           SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
